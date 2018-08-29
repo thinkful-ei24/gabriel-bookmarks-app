@@ -2,7 +2,6 @@
   bookmarks: [
   {
     title: 'name',
-    id: num,
     url: 'url',
     rating: 5,
     description: 'string',
@@ -19,7 +18,11 @@ const Store = (function() {
   /***** Functions for modifying the store *****/
   // Function for adding a bookmark
   function addBookmark(bookmarkObject) {
-    this.bookmarks.push(bookmarkObject);
+    // Default object to merge into bookmarkObject, which will give it the KVP of expanded: false
+    const defaultObjectProps = {
+      expanded: false
+    };
+    this.bookmarks.push(Object.assign(bookmarkObject, defaultObjectProps));
   }
 
   // Function for toggling adding bookmark property
@@ -56,6 +59,11 @@ const Store = (function() {
     this.errorMessage = error;
   }
 
+  // set the ratingFilter
+  function setRatingFilter(value) {
+    this.ratingFilter = value;
+  }
+
   /***** Functions for navigating the store *****/
   // Find and return a bookmark by ID value
   function findByID(bookmarkID) {
@@ -73,6 +81,7 @@ const Store = (function() {
     filterBookmarksByRating,
     toggleBookmarkExpanded,
     setErrorMessage,
-    findByID
+    findByID,
+    setRatingFilter
   };
 })();

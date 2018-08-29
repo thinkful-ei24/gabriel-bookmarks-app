@@ -13,26 +13,48 @@ description (string, optional), rating (number 1-5, optional)
 - I can filter by rating
 */
 
-/* global Store, cuid */
+/* global Store, cuid, Bookmarks, API */
 
 $(function() {
   console.log('dom ready');
 
-  Store.addBookmark({
-    title: 'test',
-    id: cuid(),
-    url: 'https://www.google.com',
-    rating: 3,
-    description: 'description string',
-    expanded: false
-  });
+  // API.createNewBookmark(
+  //   {
+  //     title: 'test',
+  //     id: cuid(),
+  //     url: 'https://www.google.com',
+  //     rating: 3,
+  //     desc: 'description string',
+  //     expanded: false
+  //   },
+  //   response => console.log(response),
+  //   error => console.error(error)
+  // );
 
-  Store.addBookmark({
-    title: 'bab',
-    id: cuid(),
-    url: 'https://www.google.com',
-    rating: 1,
-    description: 'description string',
-    expanded: false
+  // API.createNewBookmark(
+  //   {
+  //     title: 'bab',
+  //     url: 'https://www.microsoft.com',
+  //     rating: 1,
+  //     desc: 'string different description'
+  //   },
+  //   response => console.log(response),
+  //   error => console.error(error)
+  // );
+
+  // Bind the event listeners
+  Bookmarks.bindEventListeners();
+  // Make the initial API call to the server to get all the bookmarks that are present
+  API.getBookmarks(bookmarks => {
+    // Loop through bookmarks and add them to the store
+    bookmarks.forEach(bookmark => Store.addBookmark(bookmark));
+    // Render the page
+    Bookmarks.render();
   });
 });
+
+/* Important todos/follow-ups:
+
+-Make sure that we should be exposing stuff like addingBookmark in Store.js that we are modifying with functions
+-Need a data item id so we can delete
+*/

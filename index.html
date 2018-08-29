@@ -14,13 +14,27 @@
   </header>
 
   <main>
+    <!-- New bookmark button -->
+    <button id='js-new-bookmark'>NEW BOOKMARK</button>
+    <!-- Filter -->
+    <label for='filter'>Filter: </label>
+    <select id='js-filter-control' name='filter'>
+      <option value='0'>All</option>
+      <option value='5'>5</option>
+      <option value='4'>4</option>
+      <option value='3'>3</option>
+      <option value='2'>2</option>
+      <option value='1'>1</option>
+    </select>
+    <!-- Form container -->
+    <div id='js-form-container'></div>
+
     <ul class='js-bookmarks-container'>
 
     </ul>
   </main>
 
   <!-- Scripts -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"></script>
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="scripts/store.js"></script>
   <script type="text/javascript" src="scripts/bookmarks.js"></script>
