@@ -60,12 +60,38 @@ const Bookmarks = (function() {
   }
 
   // Handler for delete bookmark clicked
-  function handleDeleteBookmarkClicked() {}
+  function handleDeleteBookmarkClicked() {
+    $('.js-bookmarks-container').on('click', '.js-btn-delete', function(event) {
+      // Captured the bookmark's ID
+      const bookmarkUniqueID = getDataID(event.currentTarget);
+      // Use the ID to delete the item from the DB
+      API.deleteBookmark(
+        bookmarkUniqueID,
+        function() {
+          // Also delete from store
+          Store.findAndDelete(bookmarkUniqueID);
+          // Render the updated page
+          render();
+        },
+        function(error) {
+          // TODO - error handling
+          console.log('Error deleting item');
+          console.error(error);
+        }
+      );
+    });
+  }
+
+  // Gets the data-id of a given bookmark
+  function getDataID(bookmark) {
+    return $(bookmark)
+      .closest('.js-bookmark-item')
+      .attr('data-id');
+  }
 
   // Handler for filtering based on drop down
   function handleFilterRatingsDropdown() {
     $('#js-filter-control').change(function() {
-      console.log('filter changed');
       // Capture value of filter
       const filterValue = $('#js-filter-control').val();
       // Modify ratingFilter in store
@@ -83,10 +109,11 @@ const Bookmarks = (function() {
   // TODO - make this html not bad
   function generateSingleBookmarkListHTML(bookmark) {
     return `
-      <li>
+      <li class='js-bookmark-item' data-id=${bookmark.id}>
         Title: ${bookmark.title} - URL: ${bookmark.url} - Rating: ${
     bookmark.rating
   } Description: ${bookmark.desc}
+  <button class='js-btn-delete'>DELETE</button>
       </li>
     `;
   }

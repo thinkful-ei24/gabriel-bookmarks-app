@@ -70,6 +70,13 @@ const Store = (function() {
     return this.bookmarks.find(bookmark => bookmark.id === bookmarkID);
   }
 
+  // Find and delete a bookmark by ID value
+  function findAndDelete(bookmarkID) {
+    this.bookmarks = this.bookmarks.filter(
+      bookmark => bookmark.id !== bookmarkID
+    );
+  }
+
   return {
     bookmarks: [],
     errorMessage: '',
@@ -82,6 +89,7 @@ const Store = (function() {
     toggleBookmarkExpanded,
     setErrorMessage,
     findByID,
-    setRatingFilter
+    setRatingFilter,
+    findAndDelete
   };
 })();

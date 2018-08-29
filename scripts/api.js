@@ -17,7 +17,14 @@ const API = (function() {
   }
 
   // I can delete a bookmark
-  function deleteBookmark() {}
+  function deleteBookmark(id, callback, errorCallback) {
+    $.ajax({
+      url: `${BASE_URL}/bookmarks/${id}`,
+      method: 'DELETE',
+      success: callback,
+      error: errorCallback
+    });
+  }
 
   // I can get all bookmarks
   function getBookmarks(callback) {
