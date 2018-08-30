@@ -23,20 +23,32 @@ const Bookmarks = (function() {
     });
   }
 
+  // Serialize forms into JSON
+  $.fn.extend({
+    serializeJSON: function() {
+      const formData = new FormData(this[0]);
+      const object = {};
+      formData.forEach((value, name) => {
+        console.log(`name: ${name} value: ${value}`);
+        return (object[name] = value);
+      });
+      return JSON.stringify(object);
+    }
+  });
+
   // Handler for add bookmark clicked
   function handleAddBookmarkClicked() {
-    $('#js-form-container').on('click', '#js-add-bookmark', function(event) {
+    $('#js-form-container').submit(event => {
       event.preventDefault();
-      const title = $('#js-form-title').val();
-      const url = $('#js-form-url').val();
-      const rating = $('#js-form-rating').val();
-      const description = $('#js-form-description').val();
+      // Serialize the JSON and parse it into an object
+      console.log($(event.target).serializeJSON());
+      const serializedJSON = JSON.parse($(event.target).serializeJSON());
 
       const newBookmarkObject = {
-        title: title,
-        url: url,
-        rating: rating,
-        desc: description
+        title: serializedJSON.title,
+        url: serializedJSON.url,
+        rating: serializedJSON.rating,
+        desc: serializedJSON.description
       };
 
       API.createNewBookmark(
@@ -135,22 +147,23 @@ const Bookmarks = (function() {
   // Generate and return HTML for new bookmark form
   function generateNewBookmarkFormHTML() {
     return `
+    <form>
       <div class='col-6'>
         <!-- Title -->
-        <label for='title'>Title</label>
+        <label for='js-form-title'>Title</label>
         <li class='new-item-li'><input type='text' id='js-form-title' name='title' placeholder='Amazing programming article' required></li>
 
         <!-- Description -->
-        <label for='description'>Description</label>
+        <label for='js-form-description'>Description</label>
         <li class='new-item-li'><textarea id='js-form-description' name='description' placeholder="I can't believe its not PHP!"></textarea>
       </div>
       <div class='col-6'>
       <!-- URL -->
-        <label for='url'>URL</label>
+        <label for='js-form-url'>URL</label>
         <li class='new-item-li'><input type='url' id='js-form-url' name='url' placeholder='https://...' required></li>
 
         <!-- Rating -->
-        <label for='rating'>Rating: </label>
+        <label for='js-form-rating'>Rating: </label>
         <select id='js-form-rating' name='rating'>
           <option value='5'>5</option>
           <option value='4'>4</option>
@@ -161,8 +174,9 @@ const Bookmarks = (function() {
       </div>
       <!-- Add button -->
       <div class='add-btn-container col-12'>
-        <button id='js-add-bookmark' class='add-button'>ADD BOOKMARK</button>
+        <button type='submit' id='js-add-bookmark' class='add-button'>ADD BOOKMARK</button>
       </div>
+    </form>
     `;
   }
 

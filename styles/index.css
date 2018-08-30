@@ -55,6 +55,10 @@ form {
   margin-bottom: 1.5em;
 }
 
+.bookmark-container {
+  border-top: 3px solid #d1d1d1;
+}
+
 /* Removes bullets from new bookmark form and centers */
 .new-item-li {
   list-style-type: none;
