@@ -9,6 +9,8 @@
 
   <!-- Styles -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway:400,600,700,800" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+    crossorigin="anonymous">
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css'>
   <link rel='stylesheet' href='styles/grid.css'>
   <link rel='stylesheet' href='styles/index.css'>
@@ -29,11 +31,11 @@
         <label for='filter'>Filter: </label>
         <select id='js-filter-control' name='filter'>
           <option value='0'>All</option>
-          <option value='5'>5</option>
-          <option value='4'>4</option>
-          <option value='3'>3</option>
-          <option value='2'>2</option>
-          <option value='1'>1</option>
+          <option value='5'>5 stars</option>
+          <option value='4'>4+ stars</option>
+          <option value='3'>3+ stars</option>
+          <option value='2'>2+ stars</option>
+          <option value='1'>1+ stars</option>
         </select>
       </div>
     </div>
@@ -43,8 +45,8 @@
     </div>
     <!-- Error container -->
     <div class='row error-message-container'>
-      <p id='js-error-message'>
-      </p>
+      <span id='js-error-message'>
+      </span>
     </div>
     <!-- Bookmark container -->
     <div class="row">
@@ -52,8 +54,6 @@
         <ul class='js-bookmarks-container'></ul>
       </div>
     </div>
-
-    <button id='bad-delete'>Bad delete</button>
   </main>
 
   <!-- Scripts -->

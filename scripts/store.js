@@ -39,6 +39,7 @@ const Store = (function() {
     bookmarkToToggle.expanded = !bookmarkToToggle.expanded;
   }
 
+  /***** Setter functions *****/
   // Store and display error messages
   function setErrorMessage(error) {
     this.errorMessage = error;
@@ -62,12 +63,25 @@ const Store = (function() {
     );
   }
 
+  // Function for checking the hidden status
+  function checkIfShouldBeHidden(bookmark) {
+    if (!bookmark.expanded) {
+      return 'hidden';
+    } else {
+      return '';
+    }
+  }
+
+  // Function for checking if we're adding a bookmark
+  function checkIfAddingBookmark() {
+    return this.addingBookmark;
+  }
+
   return {
     bookmarks: [],
-    errorMessage: '',
-    addingBookmark: false,
     ratingFilter: 0,
     addBookmark,
+    checkIfAddingBookmark,
     toggleAddingBookmarkStatus,
     deleteBookmark,
     filterBookmarksByRating,
@@ -75,6 +89,7 @@ const Store = (function() {
     setErrorMessage,
     findByID,
     setRatingFilter,
-    findAndDelete
+    findAndDelete,
+    checkIfShouldBeHidden
   };
 })();

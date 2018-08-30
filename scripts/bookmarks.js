@@ -13,7 +13,6 @@ const Bookmarks = (function() {
 
   // Handler for new bookmark button clicked
   // NOTE - this is not delegated because currently the button always exists, must be delegated if we decide button should be hidden
-  // TODO - reset store addingbookmark status
   function handleNewBookmarkClicked() {
     $('#js-new-bookmark').on('click', function() {
       // Update the store's adding bookmark status
@@ -128,31 +127,114 @@ const Bookmarks = (function() {
   // Generate list item HTML
   function generateSingleBookmarkListHTML(bookmark) {
     // Check the expanded status in the store and set class appropriately
-    let hiddenStatus = '';
+    let hiddenStatus = Store.checkIfShouldBeHidden(bookmark);
 
-    if (!bookmark.expanded) {
-      hiddenStatus = 'hidden';
-    }
+    return runGeneratorFunctions(bookmark, hiddenStatus);
+  }
+
+  // Function that runs all generator functions and returns an item's HTML
+  function runGeneratorFunctions(bookmark, hiddenStatus) {
     return `
-    <li class='bookmark-item js-bookmark-item' data-id=${bookmark.id}>
-    <div class='bookmark-header js-bookmark-header'><button class='header-button'>${
-  bookmark.title
-  } | Rating: ${bookmark.rating}</button></div>
+    <li class='bookmark-item js-bookmark-item' ${generateBookmarkIDHTML(
+    bookmark
+  )}>
+    ${generateBookmarkHeader(bookmark)}
     <div class='bookmark-body ${hiddenStatus}'>
-      <p>Description: ${bookmark.desc}</p>
-      <a href='${bookmark.url}'><button class='js-btn-visit'>VISIT</button></a>
-      <button class='bookmark-button js-btn-delete'>DELETE</button>
+      <p>${generateBookmarkDescriptionHTML(bookmark)}</p>
+      ${generateBookmarkURLHTML(bookmark)}
+      ${generateDeleteButtonHTML(bookmark)}
     </div>
   </li>
     `;
   }
 
+  // Function for generating HTML for IDs
+  function generateBookmarkIDHTML(bookmark) {
+    return `data-id=${bookmark.id}`;
+  }
+
+  // Function for generating HTML for titles
+  function generateBookmarkHeader(bookmark) {
+    return `<div class='bookmark-header js-bookmark-header'><button class='header-button'>${
+      bookmark.title
+    } ${generateBookmarkRatingHTML(bookmark)}</button></div>`;
+  }
+
+  // Function for generating HTML for URLs
+  function generateBookmarkURLHTML(bookmark) {
+    return `<a href='${bookmark.url}'>${generateBookmarkVisitButtonHTML()}</a>`;
+  }
+
+  function generateBookmarkVisitButtonHTML() {
+    return '<button class="js-btn-visit">VISIT</button>';
+  }
+
+  function generateDeleteButtonHTML() {
+    return '<button class="bookmark-button js-btn-delete">DELETE</button>';
+  }
+
+  // Function for generating HTML for descriptions
+  function generateBookmarkDescriptionHTML(bookmark) {
+    if (checkIfBookmarkHasDescription(bookmark)) {
+      return `Description: ${bookmark.desc}`;
+    } else {
+      return '';
+    }
+  }
+
+  // Function for checking if a bookmark has a description
+  function checkIfBookmarkHasDescription(bookmark) {
+    if (bookmark.desc) return true;
+    return false;
+  }
+
+  // Function for generating HTML for ratings
+  function generateBookmarkRatingHTML(bookmark) {
+    if (checkIfBookmarkHasRating(bookmark)) {
+      return `| ${generateStarsHTML(bookmark.rating)}`;
+    } else {
+      return '';
+    }
+  }
+
+  // Function for checking if bookmark has a rating
+  function checkIfBookmarkHasRating(bookmark) {
+    if (bookmark.rating) return true;
+    return false;
+  }
+
+  // Function for generating FA star HTML rating times
+  function generateStarsHTML(rating) {
+    const arrayOfStarsHTML = [];
+
+    for (let i = 0; i < rating; i++) {
+      generateStarHTML(arrayOfStarsHTML);
+    }
+    return arrayOfStarsHTML.join('');
+  }
+
+  // Function for generating a single FA star and pushing to a given array
+  function generateStarHTML(array) {
+    array.push('<i class="fas fa-star"></i>');
+  }
+
   // Generate and return HTML for bookmarks list
   function generateBookmarksListHTML(arrayOfBookmarks, filterValue) {
-    const filteredArrayOfBookmarks = arrayOfBookmarks.filter(bookmark => {
-      return bookmark.rating >= filterValue;
-    });
-    return filteredArrayOfBookmarks.map(generateSingleBookmarkListHTML);
+    const filteredArrayOfBookmarks = filterArrayOfBookmarks(
+      arrayOfBookmarks,
+      filterValue
+    );
+    return mapFilteredArrayOfBookmarksToHTML(filteredArrayOfBookmarks);
+  }
+
+  // Filter an array of bookmarks based on rating
+  function filterArrayOfBookmarks(arrayOfBookmarks, filterValue) {
+    return arrayOfBookmarks.filter(bookmark => bookmark.rating >= filterValue);
+  }
+
+  // Map an array of store objects to HTML
+  function mapFilteredArrayOfBookmarksToHTML(arrayOfBookmarks) {
+    return arrayOfBookmarks.map(generateSingleBookmarkListHTML);
   }
 
   // Generate and return HTML for new bookmark form
@@ -201,7 +283,7 @@ const Bookmarks = (function() {
     let bookmarkListHTML;
 
     // If addingBookmark is true we need to render the form
-    if (Store.addingBookmark) {
+    if (Store.checkIfAddingBookmark()) {
       // Add the form onto the page
       const newBookmarkFormHTML = generateNewBookmarkFormHTML();
       $('#js-form-container').html(newBookmarkFormHTML);
