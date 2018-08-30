@@ -9,6 +9,7 @@ const Bookmarks = (function() {
     handleDeleteBookmarkClicked();
     handleFilterRatingsDropdown();
     handleToggleExpandedBookmarkView();
+    handleEditBookmarkClicked();
   }
 
   // Handler for new bookmark button clicked
@@ -19,25 +20,12 @@ const Bookmarks = (function() {
     });
   }
 
-  // Extend jQuery to serialize forms into JSON
-  $.fn.extend({
-    serializeJSON: function() {
-      const formData = new FormData(this[0]);
-      const object = {};
-      formData.forEach((value, name) => {
-        return (object[name] = value);
-      });
-      return JSON.stringify(object);
-    }
-  });
-
   // Handler for add bookmark clicked
   function handleAddBookmarkClicked() {
     $('#js-form-container').submit(event => {
       event.preventDefault();
       // Serialize the JSON and parse it into an object
       const serializedJSON = JSON.parse($(event.target).serializeJSON());
-
       const newBookmarkObject = constructBookmarkObject(serializedJSON);
 
       API.createNewBookmark(
@@ -53,29 +41,6 @@ const Bookmarks = (function() {
         error => errorCallback(error)
       );
     });
-  }
-
-  // Function for constructing a new bookmark object
-  function constructBookmarkObject(serializedJSON) {
-    return {
-      title: serializedJSON.title,
-      url: serializedJSON.url,
-      rating: serializedJSON.rating,
-      desc: serializedJSON.description
-    };
-  }
-
-  // Function for handling errors
-  function errorCallback(error) {
-    // Sets error message to the response's message
-    Store.setErrorMessage(`Error - ${getErrorMessage(error)}`);
-    // Render the page
-    render();
-  }
-
-  // Function for getting error message
-  function getErrorMessage(error) {
-    return error.responseJSON.message;
   }
 
   // Handler for delete bookmark clicked
@@ -97,16 +62,42 @@ const Bookmarks = (function() {
     });
   }
 
-  // Gets the data-id of a given bookmark
-  function getDataID(bookmark) {
-    return getDataIDAttributeValue(bookmark);
-  }
+  // Handler for edit button
+  function handleEditBookmarkClicked() {
+    $('.js-bookmarks-container').on('click', '.js-btn-edit', event => {
+      const bookmarkUniqueID = getDataID(event.currentTarget);
+      const currentBookmarkObject = Store.findByID(bookmarkUniqueID);
 
-  // Function for getting the data-id attribute of the nearest js-bookmark-item
-  function getDataIDAttributeValue(bookmark) {
-    return $(bookmark)
-      .closest('.js-bookmark-item')
-      .attr('data-id');
+      let title = prompt('Enter new title', currentBookmarkObject.title);
+      let rating = prompt('Enter new rating', currentBookmarkObject.rating);
+      let description = prompt(
+        'Enter a new description',
+        currentBookmarkObject.desc
+      );
+      let url = prompt('Enter a new URL', currentBookmarkObject.url);
+
+      if (description.length < 1) {
+        description = currentBookmarkObject.description;
+      }
+
+      const editedObject = constructBookmarkObject({
+        title: title,
+        rating: rating,
+        description: description,
+        url: url
+      });
+
+      API.updateBookmark(
+        bookmarkUniqueID,
+        editedObject,
+        response => {
+          console.log(response);
+          Store.updateBookmark(bookmarkUniqueID, editedObject);
+          render();
+        },
+        error => errorCallback(error)
+      );
+    });
   }
 
   // Handler for filtering based on drop down
@@ -130,6 +121,65 @@ const Bookmarks = (function() {
     });
   }
 
+  /***** Error handling *****/
+  // Function for handling errors
+  function errorCallback(error) {
+    // Sets error message to the response's message
+    Store.setErrorMessage(`Error - ${getErrorMessage(error)}`);
+    // Render the page
+    render();
+  }
+
+  // Function for getting error message
+  function getErrorMessage(error) {
+    return error.responseJSON.message;
+  }
+
+  /***** Utility functions *****/
+  // Function for constructing a new bookmark object
+  function constructBookmarkObject(serializedJSON) {
+    const newObject = {};
+
+    // Make sure that object properties are valid before adding them to update object
+    if (serializedJSON.title.length > 1)
+      newObject['title'] = serializedJSON.title;
+    if (serializedJSON.url.length > 5) newObject['url'] = serializedJSON.url;
+    if (serializedJSON.description.length > 1)
+      newObject['desc'] = serializedJSON.description;
+    if (
+      parseInt(serializedJSON.rating) > 0 &&
+      parseInt(serializedJSON.rating) <= 5
+    )
+      newObject['rating'] = serializedJSON.rating;
+
+    return newObject;
+  }
+
+  // Extend jQuery to serialize forms into JSON
+  $.fn.extend({
+    serializeJSON: function() {
+      const formData = new FormData(this[0]);
+      const object = {};
+      formData.forEach((value, name) => {
+        return (object[name] = value);
+      });
+      return JSON.stringify(object);
+    }
+  });
+
+  /* Data ID functions */
+  // Gets the data-id of a given bookmark
+  function getDataID(bookmark) {
+    return getDataIDAttributeValue(bookmark);
+  }
+
+  // Function for getting the data-id attribute of the nearest js-bookmark-item
+  function getDataIDAttributeValue(bookmark) {
+    return $(bookmark)
+      .closest('.js-bookmark-item')
+      .attr('data-id');
+  }
+
   /***** HTML generators *****/
   // Generate list item HTML
   function generateSingleBookmarkListHTML(bookmark) {
@@ -148,7 +198,7 @@ const Bookmarks = (function() {
     ${generateBookmarkHeader(bookmark)}
     <div class='bookmark-body ${hiddenStatus}'>
       <p>${generateBookmarkDescriptionHTML(bookmark)}</p>
-      ${generateBookmarkURLHTML(bookmark)}
+      ${generateBookmarkURLHTML(bookmark)}${generateBookmarkEditButtonHTML()}
       ${generateDeleteButtonHTML(bookmark)}
     </div>
   </li>
@@ -175,6 +225,11 @@ const Bookmarks = (function() {
   // Function for generating visit button HTML
   function generateBookmarkVisitButtonHTML() {
     return '<button class="js-btn-visit">VISIT</button>';
+  }
+
+  // Function for generating edit button HTML
+  function generateBookmarkEditButtonHTML() {
+    return '<button class="edit-btn js-btn-edit">EDIT</button>';
   }
 
   // Function for generating delete button HTML

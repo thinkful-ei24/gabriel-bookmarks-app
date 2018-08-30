@@ -68,6 +68,10 @@ form {
   margin-bottom: 2em;
 }
 
+.edit-btn {
+  margin-left: 10px;
+}
+
 /***** Bookmarks *****/
 .bookmark-container {
   border-top: 3px solid #d1d1d1;

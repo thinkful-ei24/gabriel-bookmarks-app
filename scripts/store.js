@@ -10,6 +10,12 @@ const Store = (function() {
     this.bookmarks.push(Object.assign(bookmarkObject, defaultObjectProps));
   }
 
+  // Function for updating a bookmark
+  function updateBookmark(bookmarkID, bookmarkToMerge) {
+    const object = this.bookmarks.find(bookmark => bookmark.id === bookmarkID);
+    Object.assign(object, bookmarkToMerge);
+  }
+
   // Function for toggling adding bookmark property
   function toggleAddingBookmarkStatus() {
     this.addingBookmark = !this.addingBookmark;
@@ -93,6 +99,7 @@ const Store = (function() {
     findByID,
     setRatingFilter,
     findAndDelete,
-    checkIfShouldBeHidden
+    checkIfShouldBeHidden,
+    updateBookmark
   };
 })();
