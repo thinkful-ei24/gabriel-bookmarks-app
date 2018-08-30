@@ -16,7 +16,6 @@ description (string, optional), rating (number 1-5, optional)
 /* global Store, Bookmarks, API */
 
 $(function() {
-  console.log('dom ready');
   // Bind the event listeners
   Bookmarks.bindEventListeners();
 

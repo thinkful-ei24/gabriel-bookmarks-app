@@ -90,8 +90,7 @@ const Bookmarks = (function() {
       API.updateBookmark(
         bookmarkUniqueID,
         editedObject,
-        response => {
-          console.log(response);
+        () => {
           Store.updateBookmark(bookmarkUniqueID, editedObject);
           render();
         },
