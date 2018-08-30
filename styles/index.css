@@ -54,6 +54,12 @@ form {
   display: none;
 }
 
+.error-message-container {
+  color: darkred;
+  font-weight: bold;
+  text-align: center;
+}
+
 /* Removes bullets from new bookmark form and centers */
 .new-item-li {
   list-style-type: none;

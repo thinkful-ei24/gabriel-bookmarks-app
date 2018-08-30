@@ -52,7 +52,6 @@ const Bookmarks = (function() {
       API.createNewBookmark(
         newBookmarkObject,
         function(newBookmark) {
-          console.log('successfully added to db');
           // Add bookmark to the store
           Store.addBookmark(newBookmark);
           // Toggle the form visibility
@@ -60,13 +59,17 @@ const Bookmarks = (function() {
           // Render
           render();
         },
-        function(error) {
-          // TODO - error handling
-          console.log('failed to add to db');
-          console.error(error);
-        }
+        error => errorCallback(error)
       );
     });
+  }
+
+  // Function for handling errors
+  function errorCallback(error) {
+    // Sets error message to the response's message
+    Store.setErrorMessage(`Error - ${error.responseJSON.message}`);
+    // Render the page
+    render();
   }
 
   // Handler for delete bookmark clicked
@@ -83,11 +86,7 @@ const Bookmarks = (function() {
           // Render the updated page
           render();
         },
-        function(error) {
-          // TODO - error handling
-          console.log('Error deleting item');
-          console.error(error);
-        }
+        error => errorCallback(error)
       );
     });
   }
@@ -163,7 +162,7 @@ const Bookmarks = (function() {
       <div class='col-6'>
         <!-- Title -->
         <label for='js-form-title'>Title</label>
-        <li class='new-item-li'><input type='text' id='js-form-title' name='title' placeholder='Amazing programming article' required></li>
+        <li class='new-item-li'><input type='text' id='js-form-title' name='title' placeholder='Amazing programming article' ></li>
 
         <!-- Description -->
         <label for='js-form-description'>Description</label>
@@ -172,7 +171,7 @@ const Bookmarks = (function() {
       <div class='col-6'>
       <!-- URL -->
         <label for='js-form-url'>URL</label>
-        <li class='new-item-li'><input type='url' id='js-form-url' name='url' placeholder='https://...' required></li>
+        <li class='new-item-li'><input type='url' id='js-form-url' name='url' placeholder='https://...' ></li>
 
         <!-- Rating -->
         <label for='js-form-rating'>Rating: </label>
@@ -209,6 +208,14 @@ const Bookmarks = (function() {
     } else {
       // Otherwise clear out the HTML in the form container
       $('#js-form-container').html('');
+    }
+
+    // Displays errors if found
+    if (Store.errorMessage) {
+      $('#js-error-message').html(Store.errorMessage);
+      Store.setErrorMessage('');
+    } else {
+      $('#js-error-message').html('');
     }
 
     // If a ratingFilter is active only render the relevant parts of store
