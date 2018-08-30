@@ -102,14 +102,20 @@ const Bookmarks = (function() {
   }
 
   // Handler for condensing/expanding bookmark
-  function handleToggleExpandedBookmarkView() {}
+  function handleToggleExpandedBookmarkView() {
+    $('.js-bookmarks-container').on('click', '.js-bookmark-item', function(
+      event
+    ) {
+      console.log('li clicked');
+    });
+  }
 
   /***** HTML generators *****/
   // Generate list item HTML
   // TODO - make this html not bad
   function generateSingleBookmarkListHTML(bookmark) {
     return `
-      <li class='js-bookmark-item' data-id=${bookmark.id}>
+      <li class='bookmark-item js-bookmark-item' data-id=${bookmark.id}>
         Title: ${bookmark.title} - URL: ${bookmark.url} - Rating: ${
     bookmark.rating
   } Description: ${bookmark.desc}
@@ -129,29 +135,34 @@ const Bookmarks = (function() {
   // Generate and return HTML for new bookmark form
   function generateNewBookmarkFormHTML() {
     return `
-    <form>
-    <!-- Title -->
-    <input type='text' id='js-form-title' name='title' placeholder='Title'>
+      <div class='col-6'>
+        <!-- Title -->
+        <label for='title'>Title</label>
+        <li class='new-item-li'><input type='text' id='js-form-title' name='title' placeholder='Amazing programming article' required></li>
 
-    <!-- URL -->
-    <input type='text' id='js-form-url' name='url' placeholder='URL'>
+        <!-- Description -->
+        <label for='description'>Description</label>
+        <li class='new-item-li'><textarea id='js-form-description' name='description' placeholder="I can't believe its not PHP!"></textarea>
+      </div>
+      <div class='col-6'>
+      <!-- URL -->
+        <label for='url'>URL</label>
+        <li class='new-item-li'><input type='url' id='js-form-url' name='url' placeholder='https://...' required></li>
 
-    <!-- Rating -->
-    <label for='rating'>Rating: </label>
-    <select id='js-form-rating' name='rating'>
-      <option value='5'>5</option>
-      <option value='4'>4</option>
-      <option value='3'>3</option>
-      <option value='2'>2</option>
-      <option value='1'>1</option>
-    </select>
-
-    <!-- Description -->
-    <textarea id='js-form-description' name='description' placeholder='Description'></textarea>
-
-    <!-- Add button -->
-    <button id='js-add-bookmark'>ADD BOOKMARK</button>
-  </form>
+        <!-- Rating -->
+        <label for='rating'>Rating: </label>
+        <select id='js-form-rating' name='rating'>
+          <option value='5'>5</option>
+          <option value='4'>4</option>
+          <option value='3'>3</option>
+          <option value='2'>2</option>
+          <option value='1'>1</option>
+        </select>
+      </div>
+      <!-- Add button -->
+      <div class='add-btn-container col-12'>
+        <button id='js-add-bookmark' class='add-button'>ADD BOOKMARK</button>
+      </div>
     `;
   }
 

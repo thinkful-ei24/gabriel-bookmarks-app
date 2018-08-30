@@ -13,35 +13,10 @@ description (string, optional), rating (number 1-5, optional)
 - I can filter by rating
 */
 
-/* global Store, cuid, Bookmarks, API */
+/* global Store, Bookmarks, API */
 
 $(function() {
   console.log('dom ready');
-
-  // API.createNewBookmark(
-  //   {
-  //     title: 'test',
-  //     id: cuid(),
-  //     url: 'https://www.google.com',
-  //     rating: 3,
-  //     desc: 'description string',
-  //     expanded: false
-  //   },
-  //   response => console.log(response),
-  //   error => console.error(error)
-  // );
-
-  // API.createNewBookmark(
-  //   {
-  //     title: 'bab',
-  //     url: 'https://www.microsoft.com',
-  //     rating: 1,
-  //     desc: 'string different description'
-  //   },
-  //   response => console.log(response),
-  //   error => console.error(error)
-  // );
-
   // Bind the event listeners
   Bookmarks.bindEventListeners();
   // Make the initial API call to the server to get all the bookmarks that are present
@@ -55,6 +30,9 @@ $(function() {
 
 /* Important todos/follow-ups:
 
+-Remove optional stuff from bookmarks array in wireframes
+
 -Make sure that we should be exposing stuff like addingBookmark in Store.js that we are modifying with functions
 -Need a data item id so we can delete
+-Need error handling
 */

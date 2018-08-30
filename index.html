@@ -6,32 +6,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Bookmarks</title>
+
+  <!-- Styles -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway:400,600,700,800" rel="stylesheet">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css'>
+  <link rel='stylesheet' href='styles/grid.css'>
+  <link rel='stylesheet' href='styles/index.css'>
 </head>
 
 <body>
-  <header>
+  <header class='row'>
     <h1>Bookmarks</h1>
   </header>
 
   <main>
-    <!-- New bookmark button -->
-    <button id='js-new-bookmark'>NEW BOOKMARK</button>
-    <!-- Filter -->
-    <label for='filter'>Filter: </label>
-    <select id='js-filter-control' name='filter'>
-      <option value='0'>All</option>
-      <option value='5'>5</option>
-      <option value='4'>4</option>
-      <option value='3'>3</option>
-      <option value='2'>2</option>
-      <option value='1'>1</option>
-    </select>
+    <!-- Controls div -->
+    <div class="row">
+      <div class='controls'>
+        <!-- New bookmark button -->
+        <button id='js-new-bookmark'>NEW BOOKMARK</button>
+        <!-- Filter -->
+        <label for='filter'>Filter: </label>
+        <select id='js-filter-control' name='filter'>
+          <option value='0'>All</option>
+          <option value='5'>5</option>
+          <option value='4'>4</option>
+          <option value='3'>3</option>
+          <option value='2'>2</option>
+          <option value='1'>1</option>
+        </select>
+      </div>
+    </div>
     <!-- Form container -->
-    <div id='js-form-container'></div>
+    <div class='row'>
+      <div id='js-form-container' class='form-container'></div>
+    </div>
+    <!-- <div class="row">
+      <div id=' form-container '>
 
-    <ul class='js-bookmarks-container'>
+      </div>
+    </div> -->
+    <div class="row">
+      <ul class='js-bookmarks-container '>
 
-    </ul>
+      </ul>
+    </div>
   </main>
 
   <!-- Scripts -->

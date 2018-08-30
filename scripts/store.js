@@ -1,18 +1,3 @@
-/* Store: {
-  bookmarks: [
-  {
-    title: 'name',
-    url: 'url',
-    rating: 5,
-    description: 'string',
-    expanded: false
-  }
-  ],
-  error: '',
-  addingBookmark: false,
-  ratingFilter: 0
-} */
-
 // eslint-disabled-next-line no-unused-vars
 const Store = (function() {
   /***** Functions for modifying the store *****/
