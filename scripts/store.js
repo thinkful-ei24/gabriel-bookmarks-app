@@ -17,8 +17,13 @@ const Store = (function() {
   }
 
   // Function for toggling adding bookmark property
-  function toggleAddingBookmarkStatus() {
-    this.addingBookmark = !this.addingBookmark;
+  function setAddingBookmarkStatus(bool) {
+    this.addingBookmark = bool;
+  }
+
+  // Function for toggling updating bookmark property
+  function setUpdatingBookmarkStatus(bool) {
+    this.updatingBookmark = bool;
   }
 
   // Function for deleting a bookmark by ID
@@ -86,12 +91,17 @@ const Store = (function() {
     return this.addingBookmark;
   }
 
+  // Function for checking if we're editing a bookmark
+  function checkIfEditingBookmark() {
+    return this.updatingBookmark;
+  }
+
   return {
     bookmarks: [],
     ratingFilter: 0,
     addBookmark,
     checkIfAddingBookmark,
-    toggleAddingBookmarkStatus,
+    setAddingBookmarkStatus,
     deleteBookmark,
     filterBookmarksByRating,
     toggleBookmarkExpanded,
@@ -100,6 +110,8 @@ const Store = (function() {
     setRatingFilter,
     findAndDelete,
     checkIfShouldBeHidden,
-    updateBookmark
+    updateBookmark,
+    setUpdatingBookmarkStatus,
+    checkIfEditingBookmark
   };
 })();

@@ -31,14 +31,14 @@
         <!-- End bookmark button -->
 
         <!-- Filter -->
-        <select id='js-filter-control' name='filter'>
+        <select class='filter-control' id='filter-control js-filter-control' name='filter'>
           <option value='0'>All</option>
           <option value='5'>5 stars</option>
           <option value='4'>4+ stars</option>
           <option value='3'>3+ stars</option>
           <option value='2'>2+ stars</option>
         </select>
-        <label for='filter'>Filter </label>
+        <!-- <label for='filter' id='filter-label'>Filter </label> -->
         <!-- End filter -->
 
       </div>
@@ -69,6 +69,7 @@
 
   <!-- Scripts -->
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="scripts/extend.js"></script>
   <script type="text/javascript" src="scripts/store.js"></script>
   <script type="text/javascript" src="scripts/bookmarks.js"></script>
   <script type="text/javascript" src="scripts/api.js"></script>
