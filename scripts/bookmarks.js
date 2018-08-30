@@ -12,17 +12,14 @@ const Bookmarks = (function() {
   }
 
   // Handler for new bookmark button clicked
-  // NOTE - this is not delegated because currently the button always exists, must be delegated if we decide button should be hidden
   function handleNewBookmarkClicked() {
-    $('#js-new-bookmark').on('click', function() {
-      // Update the store's adding bookmark status
+    $('#js-new-bookmark').on('click', () => {
       Store.toggleAddingBookmarkStatus();
-      // Render the DOM
       render();
     });
   }
 
-  // Serialize forms into JSON
+  // Extend jQuery to serialize forms into JSON
   $.fn.extend({
     serializeJSON: function() {
       const formData = new FormData(this[0]);
@@ -41,16 +38,11 @@ const Bookmarks = (function() {
       // Serialize the JSON and parse it into an object
       const serializedJSON = JSON.parse($(event.target).serializeJSON());
 
-      const newBookmarkObject = {
-        title: serializedJSON.title,
-        url: serializedJSON.url,
-        rating: serializedJSON.rating,
-        desc: serializedJSON.description
-      };
+      const newBookmarkObject = constructBookmarkObject(serializedJSON);
 
       API.createNewBookmark(
         newBookmarkObject,
-        function(newBookmark) {
+        newBookmark => {
           // Add bookmark to the store
           Store.addBookmark(newBookmark);
           // Toggle the form visibility
@@ -63,23 +55,38 @@ const Bookmarks = (function() {
     });
   }
 
+  // Function for constructing a new bookmark object
+  function constructBookmarkObject(serializedJSON) {
+    return {
+      title: serializedJSON.title,
+      url: serializedJSON.url,
+      rating: serializedJSON.rating,
+      desc: serializedJSON.description
+    };
+  }
+
   // Function for handling errors
   function errorCallback(error) {
     // Sets error message to the response's message
-    Store.setErrorMessage(`Error - ${error.responseJSON.message}`);
+    Store.setErrorMessage(`Error - ${getErrorMessage(error)}`);
     // Render the page
     render();
   }
 
+  // Function for getting error message
+  function getErrorMessage(error) {
+    return error.responseJSON.message;
+  }
+
   // Handler for delete bookmark clicked
   function handleDeleteBookmarkClicked() {
-    $('.js-bookmarks-container').on('click', '.js-btn-delete', function(event) {
+    $('.js-bookmarks-container').on('click', '.js-btn-delete', event => {
       // Captured the bookmark's ID
       const bookmarkUniqueID = getDataID(event.currentTarget);
       // Use the ID to delete the item from the DB
       API.deleteBookmark(
         bookmarkUniqueID,
-        function() {
+        () => {
           // Also delete from store
           Store.findAndDelete(bookmarkUniqueID);
           // Render the updated page
@@ -92,6 +99,11 @@ const Bookmarks = (function() {
 
   // Gets the data-id of a given bookmark
   function getDataID(bookmark) {
+    return getDataIDAttributeValue(bookmark);
+  }
+
+  // Function for getting the data-id attribute of the nearest js-bookmark-item
+  function getDataIDAttributeValue(bookmark) {
     return $(bookmark)
       .closest('.js-bookmark-item')
       .attr('data-id');
@@ -99,26 +111,21 @@ const Bookmarks = (function() {
 
   // Handler for filtering based on drop down
   function handleFilterRatingsDropdown() {
-    $('#js-filter-control').change(function() {
-      // Capture value of filter
-      const filterValue = $('#js-filter-control').val();
-      // Modify ratingFilter in store
-      Store.setRatingFilter(filterValue);
-      // Render page
+    $('#js-filter-control').change(() => {
+      Store.setRatingFilter(getRatingsFilterDropdownValue());
       render();
     });
   }
 
+  // Function for getting the desired rating filter value
+  function getRatingsFilterDropdownValue() {
+    return $('#js-filter-control').val();
+  }
+
   // Handler for condensing/expanding bookmark
   function handleToggleExpandedBookmarkView() {
-    $('.js-bookmarks-container').on('click', '.js-bookmark-header', function(
-      event
-    ) {
-      console.log('header clicked');
-      const id = getDataID(event.currentTarget);
-
-      Store.toggleBookmarkExpanded(id);
-
+    $('.js-bookmarks-container').on('click', '.js-bookmark-header', event => {
+      Store.toggleBookmarkExpanded(getDataID(event.currentTarget));
       render();
     });
   }
@@ -165,10 +172,12 @@ const Bookmarks = (function() {
     return `<a href='${bookmark.url}'>${generateBookmarkVisitButtonHTML()}</a>`;
   }
 
+  // Function for generating visit button HTML
   function generateBookmarkVisitButtonHTML() {
     return '<button class="js-btn-visit">VISIT</button>';
   }
 
+  // Function for generating delete button HTML
   function generateDeleteButtonHTML() {
     return '<button class="bookmark-button js-btn-delete">DELETE</button>';
   }
@@ -220,11 +229,9 @@ const Bookmarks = (function() {
 
   // Generate and return HTML for bookmarks list
   function generateBookmarksListHTML(arrayOfBookmarks, filterValue) {
-    const filteredArrayOfBookmarks = filterArrayOfBookmarks(
-      arrayOfBookmarks,
-      filterValue
+    return mapFilteredArrayOfBookmarksToHTML(
+      filterArrayOfBookmarks(arrayOfBookmarks, filterValue)
     );
-    return mapFilteredArrayOfBookmarksToHTML(filteredArrayOfBookmarks);
   }
 
   // Filter an array of bookmarks based on rating
@@ -285,8 +292,7 @@ const Bookmarks = (function() {
     // If addingBookmark is true we need to render the form
     if (Store.checkIfAddingBookmark()) {
       // Add the form onto the page
-      const newBookmarkFormHTML = generateNewBookmarkFormHTML();
-      $('#js-form-container').html(newBookmarkFormHTML);
+      $('#js-form-container').html(generateNewBookmarkFormHTML());
     } else {
       // Otherwise clear out the HTML in the form container
       $('#js-form-container').html('');
