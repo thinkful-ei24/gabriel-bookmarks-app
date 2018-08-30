@@ -31,8 +31,6 @@ const API = (function() {
 
   // Function for updating a new bookmark
   function updateBookmark(id, updateObject, callback, errorCallback) {
-    console.log('this is the update object in api');
-    console.log(updateObject);
     $.ajax({
       url: `${BASE_URL}/bookmarks/${id}`,
       method: 'PATCH',

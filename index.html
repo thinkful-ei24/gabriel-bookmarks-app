@@ -18,22 +18,19 @@
 </head>
 
 <body>
-  <header class='row'>
+  <header class='row' role='banner'>
     <h1>Bookmarks</h1>
   </header>
 
-  <main>
-
+  <main role='main'>
     <!-- Controls div -->
     <div class="row">
       <div class='controls'>
-
         <!-- New bookmark button -->
         <button id='js-new-bookmark'>NEW BOOKMARK</button>
         <!-- End bookmark button -->
 
         <!-- Filter -->
-        <label for='filter'>Filter: </label>
         <select id='js-filter-control' name='filter'>
           <option value='0'>All</option>
           <option value='5'>5 stars</option>
@@ -41,6 +38,7 @@
           <option value='3'>3+ stars</option>
           <option value='2'>2+ stars</option>
         </select>
+        <label for='filter'>Filter </label>
         <!-- End filter -->
 
       </div>
