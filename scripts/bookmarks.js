@@ -15,14 +15,15 @@ const Bookmarks = (function() {
   // Handler for new bookmark button clicked
   function handleNewBookmarkClicked() {
     $('#js-new-bookmark').on('click', () => {
-      Store.toggleAddingBookmarkStatus();
+      Store.setAddingBookmarkStatus(true);
+      Store.setUpdatingBookmarkStatus(false);
       render();
     });
   }
 
   // Handler for add bookmark clicked
   function handleAddBookmarkClicked() {
-    $('#js-form-container').submit(event => {
+    $('#js-form-container').on('submit', '#js-new-item-form', event => {
       event.preventDefault();
       // Serialize the JSON and parse it into an object
       const serializedJSON = JSON.parse($(event.target).serializeJSON());
@@ -34,7 +35,7 @@ const Bookmarks = (function() {
           // Add bookmark to the store
           Store.addBookmark(newBookmark);
           // Toggle the form visibility
-          Store.toggleAddingBookmarkStatus();
+          Store.setAddingBookmarkStatus(false);
           // Render
           render();
         },
@@ -68,34 +69,41 @@ const Bookmarks = (function() {
       const bookmarkUniqueID = getDataID(event.currentTarget);
       const currentBookmarkObject = Store.findByID(bookmarkUniqueID);
 
-      let title = prompt('Enter new title', currentBookmarkObject.title);
-      let rating = prompt('Enter new rating', currentBookmarkObject.rating);
-      let description = prompt(
-        'Enter a new description',
-        currentBookmarkObject.desc
-      );
-      let url = prompt('Enter a new URL', currentBookmarkObject.url);
+      Store.setUpdatingBookmarkStatus(true);
+      Store.setAddingBookmarkStatus(false);
 
-      if (description.length < 1) {
-        description = currentBookmarkObject.description;
-      }
+      render();
+      $('#js-form-title').val(currentBookmarkObject.title);
+      $('#js-form-description').val(currentBookmarkObject.desc);
+      $('#js-form-url').val(currentBookmarkObject.url);
+      $('#js-form-rating').val(currentBookmarkObject.rating);
 
-      const editedObject = constructBookmarkObject({
-        title: title,
-        rating: rating,
-        description: description,
-        url: url
+      $('#js-form-container').on('submit', '#js-edit-form', event => {
+        event.preventDefault();
+
+        const title = $('#js-form-title').val();
+        const description = $('#js-form-description').val();
+        const url = $('#js-form-url').val();
+        const rating = $('#js-form-rating').val();
+
+        const editedObject = constructBookmarkObject({
+          title: title,
+          rating: rating,
+          description: description,
+          url: url
+        });
+
+        API.updateBookmark(
+          bookmarkUniqueID,
+          editedObject,
+          () => {
+            Store.updateBookmark(bookmarkUniqueID, editedObject);
+            Store.setUpdatingBookmarkStatus(false);
+            render();
+          },
+          error => errorCallback(error)
+        );
       });
-
-      API.updateBookmark(
-        bookmarkUniqueID,
-        editedObject,
-        () => {
-          Store.updateBookmark(bookmarkUniqueID, editedObject);
-          render();
-        },
-        error => errorCallback(error)
-      );
     });
   }
 
@@ -140,31 +148,35 @@ const Bookmarks = (function() {
     const newObject = {};
 
     // Make sure that object properties are valid before adding them to update object
-    if (serializedJSON.title.length > 1)
+    if (serializedJSON.title.length > 0) {
       newObject['title'] = serializedJSON.title;
-    if (serializedJSON.url.length > 5) newObject['url'] = serializedJSON.url;
-    if (serializedJSON.description.length > 1)
+    } else {
+      newObject['title'] = '';
+    }
+
+    if (serializedJSON.url.length > 5) {
+      newObject['url'] = serializedJSON.url;
+    } else {
+      newObject['url'] = '';
+    }
+
+    if (serializedJSON.description.length > 0) {
       newObject['desc'] = serializedJSON.description;
+    } else {
+      newObject['desc'] = '';
+    }
+
     if (
       parseInt(serializedJSON.rating) > 0 &&
       parseInt(serializedJSON.rating) <= 5
-    )
+    ) {
       newObject['rating'] = serializedJSON.rating;
+    } else {
+      newObject['rating'] = '';
+    }
 
     return newObject;
   }
-
-  // Extend jQuery to serialize forms into JSON
-  $.fn.extend({
-    serializeJSON: function() {
-      const formData = new FormData(this[0]);
-      const object = {};
-      formData.forEach((value, name) => {
-        return (object[name] = value);
-      });
-      return JSON.stringify(object);
-    }
-  });
 
   /* Data ID functions */
   // Gets the data-id of a given bookmark
@@ -295,13 +307,49 @@ const Bookmarks = (function() {
   }
 
   // Generate and return HTML for new bookmark form
+  function generateUpdateBookmarkForm() {
+    return `
+      <form id='js-edit-form'>
+        <div class='col-6'>
+          <!-- Title -->
+          <label for='js-form-title'>Title</label>
+          <li class='new-item-li'><input type='text' id='js-form-title' name='title' placeholder='Amazing programming article'></li>
+
+          <!-- Description -->
+          <label for='js-form-description'>Description</label>
+          <li class='new-item-li'><textarea id='js-form-description' name='description' placeholder="I can't believe its not PHP!"></textarea>
+        </div>
+        <div class='col-6'>
+        <!-- URL -->
+          <label for='js-form-url'>URL</label>
+          <li class='new-item-li'><input type='url' id='js-form-url' name='url' placeholder='https://...'></li>
+
+          <!-- Rating -->
+          <label for='js-form-rating'>Rating: </label>
+          <select id='js-form-rating' name='rating'>
+            <option value='5'>5</option>
+            <option value='4'>4</option>
+            <option value='3'>3</option>
+            <option value='2'>2</option>
+            <option value='1'>1</option>
+          </select>
+        </div>
+        <!-- Add button -->
+        <div class='add-btn-container col-12'>
+          <button type='submit' id='js-update-bookmark' class='add-button'>UPDATE BOOKMARK</button>
+        </div>
+      </form>
+      `;
+  }
+
+  // Generate and return HTML for new bookmark form
   function generateNewBookmarkFormHTML() {
     return `
-    <form>
+    <form id='js-new-item-form'>
       <div class='col-6'>
         <!-- Title -->
         <label for='js-form-title'>Title</label>
-        <li class='new-item-li'><input type='text' id='js-form-title' name='title' placeholder='Amazing programming article' required></li>
+        <li class='new-item-li'><input type='text' id='js-form-title' name='title' placeholder='Amazing programming article'></li>
 
         <!-- Description -->
         <label for='js-form-description'>Description</label>
@@ -310,7 +358,7 @@ const Bookmarks = (function() {
       <div class='col-6'>
       <!-- URL -->
         <label for='js-form-url'>URL</label>
-        <li class='new-item-li'><input type='url' id='js-form-url' name='url' placeholder='https://...' required></li>
+        <li class='new-item-li'><input type='url' id='js-form-url' name='url' placeholder='https://...'></li>
 
         <!-- Rating -->
         <label for='js-form-rating'>Rating: </label>
@@ -343,6 +391,8 @@ const Bookmarks = (function() {
     if (Store.checkIfAddingBookmark()) {
       // Add the form onto the page
       $('#js-form-container').html(generateNewBookmarkFormHTML());
+    } else if (Store.checkIfEditingBookmark()) {
+      $('#js-form-container').html(generateUpdateBookmarkForm());
     } else {
       // Otherwise clear out the HTML in the form container
       $('#js-form-container').html('');

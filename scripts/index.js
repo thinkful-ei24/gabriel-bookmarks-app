@@ -10,3 +10,9 @@ $(function() {
     Bookmarks.render();
   });
 });
+
+/* TODOS
+1. Add editing prop to store so we can use render() to render the update form
+2. Allow malformed requests from updates
+3. Make sure CSS isn't borked
+*/
