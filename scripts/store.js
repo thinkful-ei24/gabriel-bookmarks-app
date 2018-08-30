@@ -23,12 +23,19 @@ const Store = (function() {
   }
 
   // Function for filtering out bookmarks with rating < rating
-  // TODO - make sure that this works as expected
   function filterBookmarksByRating(rating) {
+    updateRatingFilter(rating);
+    this.bookmarks = filterStoreBookmarksArray();
+  }
+
+  // Function for updating rating filter value
+  function updateRatingFilter(rating) {
     this.ratingFilter = rating;
-    this.bookmarks = this.bookmarks.filter(
-      bookmark => bookmark.rating >= this.ratingFilter
-    );
+  }
+
+  // Function for creating filtered array of bookmarks based on rating
+  function filterStoreBookmarksArray() {
+    this.bookmarks.filter(bookmark => bookmark.rating >= this.ratingFilter);
   }
 
   // Function for toggling the expanded status of a bookmark by ID
@@ -65,11 +72,7 @@ const Store = (function() {
 
   // Function for checking the hidden status
   function checkIfShouldBeHidden(bookmark) {
-    if (!bookmark.expanded) {
-      return 'hidden';
-    } else {
-      return '';
-    }
+    return !bookmark.expanded ? 'hidden' : '';
   }
 
   // Function for checking if we're adding a bookmark

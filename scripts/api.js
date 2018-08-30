@@ -2,21 +2,19 @@ const API = (function() {
   // Base url for API
   const BASE_URL = 'https://thinkful-list-api.herokuapp.com/gabriel';
 
-  // I can add a new bookmark
+  // Function for creating a new bookmark to POST to DB
   function createNewBookmark(bookmarkObject, callback, errorCallback) {
-    const newBookmark = JSON.stringify(bookmarkObject);
-
     $.ajax({
       url: `${BASE_URL}/bookmarks`,
       method: 'POST',
       contentType: 'application/json',
-      data: newBookmark,
+      data: JSON.stringify(bookmarkObject),
       success: callback,
       error: errorCallback
     });
   }
 
-  // I can delete a bookmark
+  // Function for sending a DELETE request to the DB
   function deleteBookmark(id, callback, errorCallback) {
     $.ajax({
       url: `${BASE_URL}/bookmarks/${id}`,
@@ -26,7 +24,7 @@ const API = (function() {
     });
   }
 
-  // I can get all bookmarks
+  // Function for sending GET request to the DB
   function getBookmarks(callback) {
     $.getJSON(`${BASE_URL}/bookmarks`, callback);
   }

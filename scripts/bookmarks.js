@@ -184,11 +184,9 @@ const Bookmarks = (function() {
 
   // Function for generating HTML for descriptions
   function generateBookmarkDescriptionHTML(bookmark) {
-    if (checkIfBookmarkHasDescription(bookmark)) {
-      return `Description: ${bookmark.desc}`;
-    } else {
-      return '';
-    }
+    return checkIfBookmarkHasDescription(bookmark)
+      ? `Description: ${bookmark.desc}`
+      : '';
   }
 
   // Function for checking if a bookmark has a description
@@ -199,11 +197,9 @@ const Bookmarks = (function() {
 
   // Function for generating HTML for ratings
   function generateBookmarkRatingHTML(bookmark) {
-    if (checkIfBookmarkHasRating(bookmark)) {
-      return `| ${generateStarsHTML(bookmark.rating)}`;
-    } else {
-      return '';
-    }
+    return checkIfBookmarkHasRating(bookmark)
+      ? `| ${generateStarsHTML(bookmark.rating)}`
+      : '';
   }
 
   // Function for checking if bookmark has a rating
