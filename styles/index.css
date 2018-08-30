@@ -45,6 +45,13 @@ form {
 
 .bookmark-container {
   border-top: 3px solid #d1d1d1;
+  padding-top: 1em;
+  margin-top: 2em;
+}
+
+/* Hidden class */
+.hidden {
+  display: none;
 }
 
 /* Removes bullets from new bookmark form and centers */
@@ -82,6 +89,12 @@ select {
   padding-top: 0.5em;
   padding-left: 1em;
   padding-right: 1em;
+  /* word-break: break-all; */
+  /* word-wrap: break-word; */
+}
+
+.bookmark-button {
+  float: right;
 }
 
 .bookmark-body p {

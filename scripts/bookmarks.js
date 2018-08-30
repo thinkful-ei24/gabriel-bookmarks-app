@@ -29,7 +29,6 @@ const Bookmarks = (function() {
       const formData = new FormData(this[0]);
       const object = {};
       formData.forEach((value, name) => {
-        console.log(`name: ${name} value: ${value}`);
         return (object[name] = value);
       });
       return JSON.stringify(object);
@@ -41,7 +40,6 @@ const Bookmarks = (function() {
     $('#js-form-container').submit(event => {
       event.preventDefault();
       // Serialize the JSON and parse it into an object
-      console.log($(event.target).serializeJSON());
       const serializedJSON = JSON.parse($(event.target).serializeJSON());
 
       const newBookmarkObject = {
@@ -115,24 +113,36 @@ const Bookmarks = (function() {
 
   // Handler for condensing/expanding bookmark
   function handleToggleExpandedBookmarkView() {
-    $('.js-bookmarks-container').on('click', '.js-bookmark-item', function(
+    $('.js-bookmarks-container').on('click', '.js-bookmark-header', function(
       event
     ) {
-      console.log('li clicked');
+      console.log('header clicked');
+      const id = getDataID(event.currentTarget);
+
+      Store.toggleBookmarkExpanded(id);
+
+      render();
     });
   }
 
   /***** HTML generators *****/
   // Generate list item HTML
   function generateSingleBookmarkListHTML(bookmark) {
+    // Check the expanded status in the store and set class appropriately
+    let hiddenStatus = '';
+
+    if (!bookmark.expanded) {
+      hiddenStatus = 'hidden';
+    }
     return `
     <li class='bookmark-item js-bookmark-item' data-id=${bookmark.id}>
-    <div class='bookmark-header'><button class='header-button'>${
+    <div class='bookmark-header js-bookmark-header'><button class='header-button'>${
   bookmark.title
   } | Rating: ${bookmark.rating}</button></div>
-    <div class='bookmark-body'>
-      <p>Description: ${bookmark.desc} - URL: ${bookmark.url}</p>
-      <button class='js-btn-delete'>DELETE</button>
+    <div class='bookmark-body ${hiddenStatus}'>
+      <p>Description: ${bookmark.desc}</p>
+      <a href='${bookmark.url}'><button class='js-btn-visit'>VISIT</button></a>
+      <button class='bookmark-button js-btn-delete'>DELETE</button>
     </div>
   </li>
     `;

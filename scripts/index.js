@@ -31,5 +31,5 @@ $(function() {
 /* Important todos/follow-ups:
 -Make sure that we should be exposing stuff like addingBookmark in Store.js that we are modifying with functions
 -Need error handling
--Add condensed/detailed views
+-Strech font awesome stars
 */
