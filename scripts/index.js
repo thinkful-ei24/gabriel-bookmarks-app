@@ -12,7 +12,9 @@ $(function() {
 });
 
 /* TODOS
-1. Add editing prop to store so we can use render() to render the update form
-2. Allow malformed requests from updates
-3. Make sure CSS isn't borked
+3. Make sure CSS isn't borked - mobile size
+1. if editing a bookmark expanding new bookmark will purge -> we can solve this by keeping edited stuff in store (which is probably preferable anyway)
+2. confirm on delete
+4. add a cancel button
+5. abstract generators
 */
