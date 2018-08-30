@@ -302,7 +302,7 @@ const Bookmarks = (function() {
       <div class='col-6'>
         <!-- Title -->
         <label for='js-form-title'>Title</label>
-        <li class='new-item-li'><input type='text' id='js-form-title' name='title' placeholder='Amazing programming article' ></li>
+        <li class='new-item-li'><input type='text' id='js-form-title' name='title' placeholder='Amazing programming article' required></li>
 
         <!-- Description -->
         <label for='js-form-description'>Description</label>
@@ -311,7 +311,7 @@ const Bookmarks = (function() {
       <div class='col-6'>
       <!-- URL -->
         <label for='js-form-url'>URL</label>
-        <li class='new-item-li'><input type='url' id='js-form-url' name='url' placeholder='https://...' ></li>
+        <li class='new-item-li'><input type='url' id='js-form-url' name='url' placeholder='https://...' required></li>
 
         <!-- Rating -->
         <label for='js-form-rating'>Rating: </label>
