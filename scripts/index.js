@@ -29,15 +29,7 @@ $(function() {
 });
 
 /* Important todos/follow-ups:
-
--Remove optional stuff from bookmarks array in wireframes
-
 -Make sure that we should be exposing stuff like addingBookmark in Store.js that we are modifying with functions
--Need a data item id so we can delete
 -Need error handling
-
-
--Need to use a submit handler for the add form for keyboard accessibility
-
--USE .serializeArray() (or formdata API??) to convert form data into an array of objects with name and value keys
+-Add condensed/detailed views
 */

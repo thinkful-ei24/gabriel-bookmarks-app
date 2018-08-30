@@ -124,15 +124,17 @@ const Bookmarks = (function() {
 
   /***** HTML generators *****/
   // Generate list item HTML
-  // TODO - make this html not bad
   function generateSingleBookmarkListHTML(bookmark) {
     return `
-      <li class='bookmark-item js-bookmark-item' data-id=${bookmark.id}>
-        Title: ${bookmark.title} - URL: ${bookmark.url} - Rating: ${
-    bookmark.rating
-  } Description: ${bookmark.desc}
-  <button class='js-btn-delete'>DELETE</button>
-      </li>
+    <li class='bookmark-item js-bookmark-item' data-id=${bookmark.id}>
+    <div class='bookmark-header'><button class='header-button'>${
+  bookmark.title
+  } | Rating: ${bookmark.rating}</button></div>
+    <div class='bookmark-body'>
+      <p>Description: ${bookmark.desc} - URL: ${bookmark.url}</p>
+      <button class='js-btn-delete'>DELETE</button>
+    </div>
+  </li>
     `;
   }
 
