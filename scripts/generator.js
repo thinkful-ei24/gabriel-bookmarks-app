@@ -25,7 +25,7 @@ const Generator = (function() {
       ${generateBookmarkDescriptionHTML(bookmark)}
       ${generateBookmarkURLHTML(bookmark)}${generateBookmarkEditButtonHTML()}
       ${generateDeleteButtonHTML(bookmark)}
-    ${generateDivLiClosingTags()}
+    ${generateAsideLiClosingTags()}
     `;
   }
 
@@ -35,7 +35,7 @@ const Generator = (function() {
   }
 
   // Function for closing divs and li
-  function generateDivLiClosingTags() {
+  function generateAsideLiClosingTags() {
     return `</aside>
     </li>`;
   }

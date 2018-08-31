@@ -10,8 +10,3 @@ $(function() {
     Bookmarks.render();
   });
 });
-
-/* TODOS
-2. confirm on delete
-4. ACCESSIBILITY!!!!!!!!!!!!!!!!!!!
-*/

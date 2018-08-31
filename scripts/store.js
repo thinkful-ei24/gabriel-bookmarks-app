@@ -35,13 +35,8 @@ const Store = (function() {
 
   // Function for filtering out bookmarks with rating < rating
   function filterBookmarksByRating(rating) {
-    updateRatingFilter(rating);
+    setRatingFilter(rating);
     this.bookmarks = filterStoreBookmarksArray();
-  }
-
-  // Function for updating rating filter value
-  function updateRatingFilter(rating) {
-    this.ratingFilter = rating;
   }
 
   // Function for creating filtered array of bookmarks based on rating

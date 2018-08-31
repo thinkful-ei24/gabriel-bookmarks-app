@@ -67,16 +67,24 @@ const Bookmarks = (function() {
   // Handler for edit button
   function handleEditBookmarkClicked() {
     $('.js-bookmarks-container').on('click', '.js-btn-edit', event => {
+      // Capture the data ID and find the relevant object in the store
       const bookmarkUniqueID = getDataID(event.currentTarget);
       const currentBookmarkObject = Store.findByID(bookmarkUniqueID);
 
+      // Set updating status to true, adding status to false, and assign the editing object in store
       Store.setUpdatingBookmarkStatus(true);
       Store.setAddingBookmarkStatus(false);
       Store.setEditingObject(currentBookmarkObject);
+      // Render page
       render();
 
+      /* Create a listener on the form
+      This needs to not be delegated to not conflict with the new bookmark form
+      Otherwise we'll update multiple objects s i m u l t a n e o u s l y */
       $('#js-edit-form').on('submit', event => {
         event.preventDefault();
+
+        // Capture all the field values and pass them to the object constructor
         const title = $('#js-form-title').val();
         const description = $('#js-form-description').val();
         const url = $('#js-form-url').val();
@@ -89,13 +97,16 @@ const Bookmarks = (function() {
           url: url
         });
 
+        // Update the bookmark in the API
         API.updateBookmark(
           bookmarkUniqueID,
           editedObject,
           () => {
+            // Update bookmark in store, reset updating status and editing object
             Store.updateBookmark(bookmarkUniqueID, editedObject);
             Store.setUpdatingBookmarkStatus(false);
             Store.resetEditingObject();
+            // Render
             render();
           },
           error => errorCallback(error)
@@ -107,8 +118,10 @@ const Bookmarks = (function() {
   // Handler for cancel button
   function handleCancelButton() {
     $('#js-form-container').on('click', '#js-cancel-bookmark', () => {
+      // If we cancel we set the updating/adding statuses to false
       Store.setAddingBookmarkStatus(false);
       Store.setUpdatingBookmarkStatus(false);
+      // Render
       render();
     });
   }
@@ -116,6 +129,7 @@ const Bookmarks = (function() {
   // Handler for filtering based on drop down
   function handleFilterRatingsDropdown() {
     $('#js-filter-control').change(() => {
+      // Dynamically set the rating filter
       Store.setRatingFilter(getRatingsFilterDropdownValue());
       render();
     });
@@ -129,6 +143,7 @@ const Bookmarks = (function() {
   // Handler for condensing/expanding bookmark
   function handleToggleExpandedBookmarkView() {
     $('.js-bookmarks-container').on('click', '.js-bookmark-header', event => {
+      // Sets expanded status on the target by ID
       Store.toggleBookmarkExpanded(getDataID(event.currentTarget));
       render();
     });
@@ -139,7 +154,6 @@ const Bookmarks = (function() {
   function errorCallback(error) {
     // Sets error message to the response's message
     Store.setErrorMessage(`Error - ${getErrorMessage(error)}`);
-    // Render the page
     render();
   }
 
@@ -184,7 +198,7 @@ const Bookmarks = (function() {
     return newObject;
   }
 
-  /* Data ID functions */
+  /*** Data ID functions ***/
   // Gets the data-id of a given bookmark
   function getDataID(bookmark) {
     return getDataIDAttributeValue(bookmark);
@@ -231,9 +245,7 @@ const Bookmarks = (function() {
       $('#js-form-description').val(Store.editingObject.desc);
       $('#js-form-url').val(Store.editingObject.url);
       $('#js-form-rating').val(Store.editingObject.rating);
-    } else if (Store.checkIfAddingBookmark()) {
-      console.log('not doing anything');
-    } else {
+    } else if (!Store.checkIfAddingBookmark()) {
       clearFormValues();
     }
 
