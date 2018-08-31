@@ -10,6 +10,7 @@ const Bookmarks = (function() {
     handleFilterRatingsDropdown();
     handleToggleExpandedBookmarkView();
     handleEditBookmarkClicked();
+    handleCancelButton();
   }
 
   // Handler for new bookmark button clicked
@@ -104,6 +105,15 @@ const Bookmarks = (function() {
           error => errorCallback(error)
         );
       });
+    });
+  }
+
+  // Handler for cancel button
+  function handleCancelButton() {
+    $('#js-form-container').on('click', '#js-cancel-bookmark', event => {
+      Store.setAddingBookmarkStatus(false);
+      Store.setUpdatingBookmarkStatus(false);
+      render();
     });
   }
 
