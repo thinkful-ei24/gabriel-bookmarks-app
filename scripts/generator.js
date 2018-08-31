@@ -100,19 +100,20 @@ const Generator = (function() {
 
   // Function for generating FA star HTML rating times
   function generateStarsHTML(rating) {
-    const arrayOfStarsHTML = [];
+    const ariaLabel = `<span aria-label="rating: ${rating} stars">`;
+    const arrayOfStarsHTML = [ariaLabel];
+    const closeSpan = '</span>';
 
     for (let i = 0; i < rating; i++) {
       generateStarHTML(arrayOfStarsHTML, rating);
     }
+    arrayOfStarsHTML.push(closeSpan);
     return arrayOfStarsHTML.join('');
   }
 
   // Function for generating a single FA star and pushing to a given array
-  function generateStarHTML(array, rating) {
-    array.push(
-      `<i class="fa fa-star" aria-label="rating: ${rating} stars"></i>`
-    );
+  function generateStarHTML(array) {
+    array.push('<i class="fa fa-star" aria-hidden="true"></i>');
   }
 
   // Filter an array of bookmarks based on rating
