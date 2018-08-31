@@ -96,9 +96,23 @@ const Store = (function() {
     return this.updatingBookmark;
   }
 
+  // Function for setting editingObject
+  function setEditingObject(object) {
+    this.editingObject.title = object.title;
+    this.editingObject.desc = object.desc;
+    this.editingObject.url = object.url;
+    this.editingObject.rating = object.rating;
+  }
+
+  // Function for resetting editingObject
+  function resetEditingObject() {
+    this.editingObject = {};
+  }
+
   return {
     bookmarks: [],
     ratingFilter: 0,
+    editingObject: {},
     addBookmark,
     checkIfAddingBookmark,
     setAddingBookmarkStatus,
@@ -112,6 +126,8 @@ const Store = (function() {
     checkIfShouldBeHidden,
     updateBookmark,
     setUpdatingBookmarkStatus,
-    checkIfEditingBookmark
+    checkIfEditingBookmark,
+    setEditingObject,
+    resetEditingObject
   };
 })();

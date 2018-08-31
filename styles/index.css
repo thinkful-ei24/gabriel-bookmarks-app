@@ -19,7 +19,7 @@ ul {
 }
 
 /* Center labels so they look good */
-.filter-label {
+#filter-label {
   text-align: right;
   margin-top: 9.8px;
   margin-bottom: 9.8px;
@@ -74,6 +74,7 @@ form {
 
 .edit-btn {
   margin-left: 10px;
+  float: right;
 }
 
 /***** Bookmarks *****/
@@ -147,6 +148,15 @@ select {
 
 .add-btn-container {
   text-align: center;
+}
+
+legend {
+  color: #606060;
+}
+
+fieldset {
+  /* border-color: #bdb9b9; */
+  border: 2px solid #bdb9b9;
 }
 
 /***** Style inputs *****/
@@ -223,7 +233,7 @@ button:hover {
 
 /* Mobile "my buttons look fine!" media query */
 @media (max-width: 460px) {
-  .filter-label {
+  #filter-label {
     float: none;
     display: inline-block;
     text-align: center;
@@ -233,7 +243,19 @@ button:hover {
     float: none;
   }
 
+  .filter-control {
+    float: none;
+  }
+
   .controls {
     text-align: center;
+  }
+
+  .edit-btn {
+    float: none;
+  }
+
+  .bookmark-button {
+    float: none;
   }
 }

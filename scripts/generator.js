@@ -36,13 +36,13 @@ const Generator = (function() {
 
   // Function for closing divs and li
   function generateDivLiClosingTags() {
-    return `</div>
+    return `</aside>
     </li>`;
   }
 
   // Function for generating div with hidden status
   function genereateDivWithClassHTML(hiddenStatus) {
-    return `<div class='bookmark-body ${hiddenStatus}'>`;
+    return `<aside class='bookmark-body ${hiddenStatus}' role="complementary">`;
   }
 
   // Function for generating HTML for titles
@@ -127,6 +127,8 @@ const Generator = (function() {
   function generateUpdateBookmarkForm() {
     return `
       <form id='js-edit-form'>
+      <fieldset>
+      <legend>Update Bookmark</legend>
         <div class='col-6'>
           <!-- Title -->
           <label for='js-form-title'>Title</label>
@@ -156,6 +158,7 @@ const Generator = (function() {
           <button type='submit' id='js-update-bookmark' class='add-button'>UPDATE BOOKMARK</button>
           <button type='button' id='js-cancel-bookmark'>CANCEL</button>
         </div>
+        </fieldset>
       </form>
       `;
   }
@@ -164,6 +167,8 @@ const Generator = (function() {
   function generateNewBookmarkFormHTML() {
     return `
     <form id='js-new-item-form'>
+    <fieldset>
+    <legend>New Bookmark</legend>
       <div class='col-6'>
         <!-- Title -->
         <label for='js-form-title'>Title</label>
@@ -181,7 +186,7 @@ const Generator = (function() {
         <!-- Rating -->
         <label for='js-form-rating'>Rating: </label>
         <select id='js-form-rating' name='rating'>
-          <option value='5'>5</option>
+          <option value='5' selected>5</option>
           <option value='4'>4</option>
           <option value='3'>3</option>
           <option value='2'>2</option>
@@ -193,6 +198,7 @@ const Generator = (function() {
         <button type='submit' id='js-add-bookmark' class='add-button'>ADD BOOKMARK</button>
         <button type='button' id='js-cancel-bookmark'>CANCEL</button>
       </div>
+      </fieldset>
     </form>
     `;
   }
