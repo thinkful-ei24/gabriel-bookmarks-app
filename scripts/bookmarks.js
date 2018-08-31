@@ -188,8 +188,6 @@ const Bookmarks = (function() {
 
     if (serializedJSON.description.length > 0) {
       newObject['desc'] = serializedJSON.description;
-    } else {
-      newObject['desc'] = '';
     }
 
     if (
@@ -197,8 +195,6 @@ const Bookmarks = (function() {
       parseInt(serializedJSON.rating) <= 5
     ) {
       newObject['rating'] = serializedJSON.rating;
-    } else {
-      newObject['rating'] = '';
     }
 
     return newObject;

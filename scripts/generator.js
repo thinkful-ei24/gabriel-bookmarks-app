@@ -47,9 +47,9 @@ const Generator = (function() {
 
   // Function for generating HTML for titles
   function generateBookmarkHeader(bookmark) {
-    return `<div class='bookmark-header js-bookmark-header'><button class='header-button'>${
+    return `<section class='bookmark-header js-bookmark-header'><button class='header-button'>${
       bookmark.title
-    } ${generateBookmarkRatingHTML(bookmark)}</button></div>`;
+    } ${generateBookmarkRatingHTML(bookmark)}</button></section>`;
   }
 
   // Function for generating HTML for URLs
