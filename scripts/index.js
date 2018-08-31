@@ -12,7 +12,6 @@ $(function() {
 });
 
 /* TODOS
-3. Make sure CSS isn't borked - mobile size
-1. if editing a bookmark expanding new bookmark will purge -> we can solve this by keeping edited stuff in store (which is probably preferable anyway)
 2. confirm on delete
+4. ACCESSIBILITY!!!!!!!!!!!!!!!!!!!
 */

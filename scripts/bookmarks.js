@@ -72,16 +72,11 @@ const Bookmarks = (function() {
 
       Store.setUpdatingBookmarkStatus(true);
       Store.setAddingBookmarkStatus(false);
-
+      Store.setEditingObject(currentBookmarkObject);
       render();
-      $('#js-form-title').val(currentBookmarkObject.title);
-      $('#js-form-description').val(currentBookmarkObject.desc);
-      $('#js-form-url').val(currentBookmarkObject.url);
-      $('#js-form-rating').val(currentBookmarkObject.rating);
 
-      $('#js-form-container').on('submit', '#js-edit-form', event => {
+      $('#js-edit-form').on('submit', event => {
         event.preventDefault();
-
         const title = $('#js-form-title').val();
         const description = $('#js-form-description').val();
         const url = $('#js-form-url').val();
@@ -100,6 +95,7 @@ const Bookmarks = (function() {
           () => {
             Store.updateBookmark(bookmarkUniqueID, editedObject);
             Store.setUpdatingBookmarkStatus(false);
+            Store.resetEditingObject();
             render();
           },
           error => errorCallback(error)
@@ -110,7 +106,7 @@ const Bookmarks = (function() {
 
   // Handler for cancel button
   function handleCancelButton() {
-    $('#js-form-container').on('click', '#js-cancel-bookmark', event => {
+    $('#js-form-container').on('click', '#js-cancel-bookmark', () => {
       Store.setAddingBookmarkStatus(false);
       Store.setUpdatingBookmarkStatus(false);
       render();
@@ -201,6 +197,14 @@ const Bookmarks = (function() {
       .attr('data-id');
   }
 
+  // Function for clearing form values
+  function clearFormValues() {
+    $('#js-form-title').val('');
+    $('#js-form-description').val('');
+    $('#js-form-url').val('');
+    $('#js-form-rating').val('');
+  }
+
   // Render page
   function render() {
     // Store bookmarks as a variable
@@ -219,6 +223,18 @@ const Bookmarks = (function() {
     } else {
       // Otherwise clear out the HTML in the form container
       $('#js-form-container').html('');
+    }
+
+    // Sets form text if there is an editingObject and if not adding a bookmark (this means the form will be cleared if user does edit -> new bookmark)
+    if (Store.editingObject && !Store.checkIfAddingBookmark()) {
+      $('#js-form-title').val(Store.editingObject.title);
+      $('#js-form-description').val(Store.editingObject.desc);
+      $('#js-form-url').val(Store.editingObject.url);
+      $('#js-form-rating').val(Store.editingObject.rating);
+    } else if (Store.checkIfAddingBookmark()) {
+      console.log('not doing anything');
+    } else {
+      clearFormValues();
     }
 
     // Displays errors if found

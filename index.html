@@ -23,46 +23,46 @@
 
   <main role='main'>
     <!-- Controls div -->
-    <div class="row">
+    <section class="row">
       <div class='controls'>
         <!-- New bookmark button -->
         <button id='js-new-bookmark'>NEW BOOKMARK</button>
         <!-- End bookmark button -->
 
         <!-- Filter -->
-        <select class='filter-control' id='filter-control js-filter-control' name='filter'>
+        <select class='filter-control' id='js-filter-control' name='filter'>
           <option value='0'>All</option>
           <option value='5'>5 stars</option>
           <option value='4'>4+ stars</option>
           <option value='3'>3+ stars</option>
           <option value='2'>2+ stars</option>
         </select>
-        <!-- <label for='filter' id='filter-label'>Filter </label> -->
+        <label for='filter' id='filter-label'>Filter </label>
         <!-- End filter -->
 
       </div>
-    </div>
+    </section>
     <!-- End controls div -->
 
     <!-- Form container -->
-    <div class='row'>
+    <section class='row'>
       <div id='js-form-container' class='form-container'></div>
-    </div>
+    </section>
     <!-- End form container -->
 
     <!-- Error container -->
-    <div class='row error-message-container'>
+    <section class='row error-message-container'>
       <span id='js-error-message'>
       </span>
-    </div>
+    </section>
     <!-- End error container -->
 
     <!-- Bookmark container -->
-    <div class="row">
+    <section class="row">
       <div class='bookmark-container'>
         <ul class='js-bookmarks-container'></ul>
       </div>
-    </div>
+    </section>
     <!-- End bookmark container -->
   </main>
 
