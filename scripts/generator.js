@@ -100,11 +100,14 @@ const Generator = (function() {
 
   // Function for generating FA star HTML rating times
   function generateStarsHTML(rating) {
-    const arrayOfStarsHTML = [];
+    const ariaLabel = `<span aria-label="rating: ${rating} stars">`;
+    const arrayOfStarsHTML = [ariaLabel];
+    const closeSpan = '</span>';
 
     for (let i = 0; i < rating; i++) {
-      generateStarHTML(arrayOfStarsHTML);
+      generateStarHTML(arrayOfStarsHTML, rating);
     }
+    arrayOfStarsHTML.push(closeSpan);
     return arrayOfStarsHTML.join('');
   }
 
@@ -144,8 +147,8 @@ const Generator = (function() {
           <li class='new-item-li'><input type='url' id='js-form-url' name='url' placeholder='https://...'></li>
 
           <!-- Rating -->
-          <label for='js-form-rating'>Rating: </label>
-          <select id='js-form-rating' name='rating'>
+          <label for='js-form-rating' id='rating-label'>Rating: </label>
+          <select id='js-form-rating' name='rating' aria-labelledby='rating-label'>
             <option value='5'>5</option>
             <option value='4'>4</option>
             <option value='3'>3</option>
@@ -184,8 +187,8 @@ const Generator = (function() {
         <li class='new-item-li'><input type='url' id='js-form-url' name='url' placeholder='https://...'></li>
 
         <!-- Rating -->
-        <label for='js-form-rating'>Rating: </label>
-        <select id='js-form-rating' name='rating'>
+        <label for='js-form-rating' id='rating-label'>Rating: </label>
+        <select id='js-form-rating' name='rating' aria-labelledby='rating-label'>
           <option value='5' selected>5</option>
           <option value='4'>4</option>
           <option value='3'>3</option>
