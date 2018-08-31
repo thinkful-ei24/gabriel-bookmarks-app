@@ -47,7 +47,7 @@ const Generator = (function() {
 
   // Function for generating HTML for titles
   function generateBookmarkHeader(bookmark) {
-    return `<div class='bookmark-header js-bookmark-header'><button class='header-button'>${
+    return `<div class='bookmark-header js-bookmark-header'><button aria-label='Click to view bookmark details' class='header-button'>${
       bookmark.title
     } ${generateBookmarkRatingHTML(bookmark)}</button></div>`;
   }
@@ -59,17 +59,17 @@ const Generator = (function() {
 
   // Function for generating visit button HTML
   function generateBookmarkVisitButtonHTML() {
-    return '<button class="js-btn-visit">VISIT</button>';
+    return '<button class="js-btn-visit" aria-label="Visit site">VISIT</button>';
   }
 
   // Function for generating edit button HTML
   function generateBookmarkEditButtonHTML() {
-    return '<button class="edit-btn js-btn-edit">EDIT</button>';
+    return '<button class="edit-btn js-btn-edit" aria-label="Edit bookmark">EDIT</button>';
   }
 
   // Function for generating delete button HTML
   function generateDeleteButtonHTML() {
-    return '<button class="bookmark-button js-btn-delete">DELETE</button>';
+    return '<button class="bookmark-button js-btn-delete" aria-label="Delete bookmark">DELETE</button>';
   }
 
   // Function for generating HTML for descriptions
