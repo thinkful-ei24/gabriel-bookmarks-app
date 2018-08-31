@@ -110,7 +110,7 @@ const Generator = (function() {
 
   // Function for generating a single FA star and pushing to a given array
   function generateStarHTML(array) {
-    array.push('<i class="fa fa-star" aria-hidden="true"></i>');
+    array.push('<i class="fa fa-star" aria-label="star"></i>');
   }
 
   // Filter an array of bookmarks based on rating
@@ -144,8 +144,8 @@ const Generator = (function() {
           <li class='new-item-li'><input type='url' id='js-form-url' name='url' placeholder='https://...'></li>
 
           <!-- Rating -->
-          <label for='js-form-rating'>Rating: </label>
-          <select id='js-form-rating' name='rating'>
+          <label for='js-form-rating' id='rating-label'>Rating: </label>
+          <select id='js-form-rating' name='rating' aria-labelledby='rating-label'>
             <option value='5'>5</option>
             <option value='4'>4</option>
             <option value='3'>3</option>
@@ -184,8 +184,8 @@ const Generator = (function() {
         <li class='new-item-li'><input type='url' id='js-form-url' name='url' placeholder='https://...'></li>
 
         <!-- Rating -->
-        <label for='js-form-rating'>Rating: </label>
-        <select id='js-form-rating' name='rating'>
+        <label for='js-form-rating' id='rating-label'>Rating: </label>
+        <select id='js-form-rating' name='rating' aria-labelledby='rating-label'>
           <option value='5' selected>5</option>
           <option value='4'>4</option>
           <option value='3'>3</option>
