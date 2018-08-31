@@ -110,7 +110,7 @@ const Bookmarks = (function() {
 
   // Handler for cancel button
   function handleCancelButton() {
-    $('#js-form-container').on('click', '#js-cancel-bookmark', event => {
+    $('#js-form-container').on('click', '#js-cancel-bookmark', () => {
       Store.setAddingBookmarkStatus(false);
       Store.setUpdatingBookmarkStatus(false);
       render();
