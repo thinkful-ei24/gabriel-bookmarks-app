@@ -1,6 +1,6 @@
 # Bookmarks app
 
-**Bookmarks** is a simple bookmark management app built as part of [Thinkful's Engineering Immersion](https://www.thinkful.com/bootcamp/web-development/full-time/) program. It uses jQuery AJAX functionality to communicate with a database and maintain a persistent list of user submitted bookmarks. Note that bookmarks are currently deleted every 24 hours by the database.
+**[Bookmarks](https://thinkful-ei24.github.io/gabriel-bookmarks-app/)** is a simple bookmark management app built as part of [Thinkful's Engineering Immersion](https://www.thinkful.com/bootcamp/web-development/full-time/) program. It uses jQuery AJAX functionality to communicate with a database and maintain a persistent list of user submitted bookmarks. Note that bookmarks are currently deleted every 24 hours by the database.
 
 ## User stories
 
