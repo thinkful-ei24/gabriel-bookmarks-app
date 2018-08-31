@@ -19,22 +19,30 @@ const Generator = (function() {
   // Function that runs all generator functions and returns an item's HTML
   function runGeneratorFunctions(bookmark, hiddenStatus) {
     return `
-    <li class='bookmark-item js-bookmark-item' ${generateBookmarkIDHTML(
-    bookmark
-  )}>
+    ${generateLiItemWithDataID(bookmark)}
     ${generateBookmarkHeader(bookmark)}
-    <div class='bookmark-body ${hiddenStatus}'>
-      <p>${generateBookmarkDescriptionHTML(bookmark)}</p>
+    ${genereateDivWithClassHTML(hiddenStatus)}
+      ${generateBookmarkDescriptionHTML(bookmark)}
       ${generateBookmarkURLHTML(bookmark)}${generateBookmarkEditButtonHTML()}
       ${generateDeleteButtonHTML(bookmark)}
-    </div>
-  </li>
+    ${generateDivLiClosingTags()}
     `;
   }
 
   // Function for generating HTML for IDs
-  function generateBookmarkIDHTML(bookmark) {
-    return `data-id=${bookmark.id}`;
+  function generateLiItemWithDataID(bookmark) {
+    return `<li class='bookmark-item js-bookmark-item' data-id=${bookmark.id}>`;
+  }
+
+  // Function for closing divs and li
+  function generateDivLiClosingTags() {
+    return `</div>
+    </li>`;
+  }
+
+  // Function for generating div with hidden status
+  function genereateDivWithClassHTML(hiddenStatus) {
+    return `<div class='bookmark-body ${hiddenStatus}'>`;
   }
 
   // Function for generating HTML for titles
@@ -67,7 +75,7 @@ const Generator = (function() {
   // Function for generating HTML for descriptions
   function generateBookmarkDescriptionHTML(bookmark) {
     return checkIfBookmarkHasDescription(bookmark)
-      ? `Description: ${bookmark.desc}`
+      ? `<p>Description: ${bookmark.desc}</p>`
       : '';
   }
 
@@ -143,9 +151,10 @@ const Generator = (function() {
             <option value='1'>1</option>
           </select>
         </div>
-        <!-- Add button -->
+        <!-- Add/Cancel button -->
         <div class='add-btn-container col-12'>
           <button type='submit' id='js-update-bookmark' class='add-button'>UPDATE BOOKMARK</button>
+          <button type='button' id='js-cancel-bookmark'>CANCEL</button>
         </div>
       </form>
       `;
@@ -182,6 +191,7 @@ const Generator = (function() {
       <!-- Add button -->
       <div class='add-btn-container col-12'>
         <button type='submit' id='js-add-bookmark' class='add-button'>ADD BOOKMARK</button>
+        <button type='button' id='js-cancel-bookmark'>CANCEL</button>
       </div>
     </form>
     `;
