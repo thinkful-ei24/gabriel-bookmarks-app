@@ -103,14 +103,16 @@ const Generator = (function() {
     const arrayOfStarsHTML = [];
 
     for (let i = 0; i < rating; i++) {
-      generateStarHTML(arrayOfStarsHTML);
+      generateStarHTML(arrayOfStarsHTML, rating);
     }
     return arrayOfStarsHTML.join('');
   }
 
   // Function for generating a single FA star and pushing to a given array
-  function generateStarHTML(array) {
-    array.push('<i class="fa fa-star" aria-label="star"></i>');
+  function generateStarHTML(array, rating) {
+    array.push(
+      `<i class="fa fa-star" aria-label="rating: ${rating} stars"></i>`
+    );
   }
 
   // Filter an array of bookmarks based on rating
