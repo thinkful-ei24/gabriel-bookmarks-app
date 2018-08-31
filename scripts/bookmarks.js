@@ -50,17 +50,23 @@ const Bookmarks = (function() {
     $('.js-bookmarks-container').on('click', '.js-btn-delete', event => {
       // Captured the bookmark's ID
       const bookmarkUniqueID = getDataID(event.currentTarget);
-      // Use the ID to delete the item from the DB
-      API.deleteBookmark(
-        bookmarkUniqueID,
-        () => {
-          // Also delete from store
-          Store.findAndDelete(bookmarkUniqueID);
-          // Render the updated page
-          render();
-        },
-        error => errorCallback(error)
+      // Prompt user for confirmation
+      const confirmedDeletion = confirm(
+        'Are you sure you want to delete this bookmark?'
       );
+      // Use the ID to delete the item from the DB
+      if (confirmedDeletion) {
+        API.deleteBookmark(
+          bookmarkUniqueID,
+          () => {
+            // Also delete from store
+            Store.findAndDelete(bookmarkUniqueID);
+            // Render the updated page
+            render();
+          },
+          error => errorCallback(error)
+        );
+      }
     });
   }
 
